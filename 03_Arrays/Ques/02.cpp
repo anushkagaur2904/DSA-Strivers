@@ -1,53 +1,48 @@
-//Largest element in array
-//https://www.geeksforgeeks.org/problems/largest-element-in-array4009/1
+//Remove duplicates in place from sorted array
+//https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
+
+
 /*
+arr[]=[1,1,2,2,2,3,3]
+output => [1,2,3,----]
+modify the given array and return number of unique elements
+*/
 
+//++++++BRUTE++++++++
+/*
+unique mtlb set
+//first pass
+set<int> st
+for(int i=0;i<n;i++){
+    st.insert(arr[i]);
+}// TC => O(NlogN)
+int index=0
+for(auto it:st){
+    arr[index]=it;
+    index++
+}//TC=>O(N)
+return index
+//TC => O(NlogN + N)
+//SC => O(N) worst case agar sab hi unique elements hai
+*/
 
+//++++++OPTIMAL+++++++++
+/*
+use two pointer approach
 class Solution {
-  public:
-    int largest(vector<int> &arr) {
-        // code here
-        int largest = arr[0];
-        int n= arr.size();
-        for(int i=1;i<n;i++){
-            if(arr[i]>largest){
-                largest=arr[i];
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int i=0;
+        int n = nums.size();
+        for(int j=1;j<n;j++){
+            if(nums[i]!=nums[j]){
+                nums[i+1]=nums[j];
+                i++;
             }
         }
-        return largest;
-        
+        return i+1;
     }
 };
 //TC => O(N)
-
-/*
-BRUTE FORCE
-Sort then print arr[n-1]
-TC => O(NlogN)
-SC => O(1)
-*/
-
-//Smallest element in array
-/*
-int smallestElement(vector<int> &arr) {
-    int minElement = arr[0];  // assume first element is smallest
-
-    for (int i = 1; i < arr.size(); i++) {
-        if (arr[i] < minElement) {
-            minElement = arr[i];
-        }
-    }
-
-    return minElement;
-}
-
-Complexity
-Time: O(n)
-Space: O(1)
-*/
-
-//+++++STL++++++
-/*
-return *max_element(arr.begin(), arr.end());
-return *min_element(arr.begin(), arr.end());
+//SC => O(1)
 */
