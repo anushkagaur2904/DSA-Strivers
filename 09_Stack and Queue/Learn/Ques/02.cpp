@@ -29,7 +29,6 @@ class Solution {
             }
             s.push(arr[i]);
         }
-        reverse(v.begin(),v.end());
         return v;
     }
 };
