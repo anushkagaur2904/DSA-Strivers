@@ -95,3 +95,90 @@ public:
  * StockSpanner* obj = new StockSpanner();
  * int param_1 = obj->next(price);
  */
+
+
+/*
+✅ Idea Behind Optimization
+
+Instead of storing:
+
+price + index
+
+we directly store:
+
+price + span
+
+This avoids recalculating spans.
+
+✅ Dry Run
+
+Input:
+
+100 80 60 70 60 75 85
+🔹 next(100)
+
+Stack empty.
+
+Span:
+
+1
+
+Push:
+
+{100,1}
+🔹 next(80)
+100 > 80
+
+Span:
+
+1
+
+Push:
+
+{80,1}
+🔹 next(70)
+
+Pop:
+
+60
+
+Add span:
+
+1 + 1 = 2
+
+Push:
+
+{70,2}
+🔹 next(85)
+
+Pop:
+
+75(span=4)
+80(span=1)
+
+Total:
+
+1+4+1 = 6
+
+Push:
+
+{85,6}
+✅ Final Output
+1 1 1 2 1 4 6
+✅ Complexity
+Complexity	Value
+Time	Amortized O(1)
+Space	O(n)
+🔥 Important Interview Insight
+
+Each element:
+
+pushed once
+popped once
+
+So total operations:
+
+O(n)
+
+for all calls combined.
+*/
