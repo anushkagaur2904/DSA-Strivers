@@ -1,102 +1,80 @@
-//STACK USING ARRAYS
-//https://www.geeksforgeeks.org/problems/implement-stack-using-array/1
-//not dynamic in nature
-/*
-size has to be known
+//LRU cache
+//https://leetcode.com/problems/lru-cache/
 
-class st{
-    top=-1, int st[size];
+/*
+class LRUCache {
+public:
+    class node {
+        public:
+            int key;
+            int val;
+            node* next;
+            node* prev;
+            node(int _key,int _val){
+                key = _key;
+                val = _val;
+            }
+    };
+
+    node* head = new node(-1,-1);
+    node* tail = new node(-1,-1);
+
+    int cap;
+    unordered_map <int,node*> m;
+
+    LRUCache(int capacity) {
+        cap = capacity;
+        head->next=tail;
+        tail->prev=head;
+    }
     
-    push(x){
-        if(top>=size){
-            error;
-        }
-        top=top+1;
-        st[top]=x;
+    void addnode(node* newnode){
+        node* temp = head->next;
+        newnode->next = temp;
+        newnode->prev = head;
+        head->next = newnode;
+        temp->prev=newnode;
     }
 
-    int top(){
-        if(top==-1){
-            empty;
-        }
-        else{
-            return st[top];
-        }
+    void deletenode(node* delnode){
+        node* delprev = delnode->prev;
+        node* delnext = delnode->next;
+        delprev->next = delnext;
+        delnext->prev = delprev;
     }
 
-    pop(){
-        if(top==-1){
-            empty;
-        }
-        top=top-1;
+    int get(int key_) {
+        if(m.find(key_)!=m.end()){
+            //key exists
+            node* resnode = m[key_];
+            int res = resnode->val;
+            m.erase(key_);
+            deletenode(resnode);
+            addnode(resnode);
+            m[key_]=head->next;
+            return res;
+        }   
+    return -1;
     }
-
-    size(){
-        return top+1;
-    }
-}
-
-TC => PUSH , POP, TOP, SIZE all in O(1)
-SC => depends on size of array
-      
-*/
-
-/*
-class myStack {
-    int top;
-    int capacity;
-    int *st;
-  public:
-    myStack(int n) {
-        // Define Data Structures
-        capacity=n;
-        top=-1;
-        st = new int[n];
-    }
-
-    bool isEmpty() {
-        // check if the stack is empty
-        if(top==-1){
-            return true;
+    
+    void put(int key_, int value) {
+        if(m.find(key_)!=m.end()){
+            node* existingnode = m[key_];
+            m.erase(key_);
+            deletenode(existingnode);
         }
-        else{
-            return false;
+        if(m.size()==cap){
+            m.erase(tail->prev->key);
+            deletenode(tail->prev);
         }
-    }
-
-    bool isFull() {
-        // check if the stack is full
-        if(top==capacity-1){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    void push(int x) {
-        // inserts x at the top of the stack
-        if(isFull()){
-            return;
-        }
-        top=top+1;
-        st[top]=x;
-    }
-
-    void pop() {
-        // removes an element from the top of the stack
-        if(isEmpty()){
-            return;
-        }
-        top=top-1;
-    }
-
-    int peek() {
-        // Returns the top element of the stack
-        if(isEmpty()){
-            return -1;
-        }
-        return st[top];
+        addnode(new node(key_,value));
+        m[key_]= head->next;
     }
 };
-*/
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
