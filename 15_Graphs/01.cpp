@@ -13,7 +13,7 @@ for(int i=0;i<m;i++){
 }
 */
 
-//+++++++++ADJACENY LIST+++++++
+//+++++++++Adjacency list+++++++
 /*
 int n,m;
 cin>>n>>m;
