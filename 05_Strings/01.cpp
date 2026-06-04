@@ -1,5 +1,27 @@
-//Reverse Words in a string
+//Reverse every word in a string
+//https://leetcode.com/problems/reverse-words-in-a-string/description/
+
 /*
-“I’ll traverse the string from the end and extract words one by one.
-This automatically gives words in reverse order while also handling extra spaces.”
+class Solution {
+public:
+    string reverseWords(string s) {
+        int n = s.length();
+        string ans = "";
+
+        reverse(s.begin(),s.end());
+
+        for(int i=0;i<n;i++){
+            string word = "";
+            while(i<n && s[i] != ' '){
+                word+=s[i];
+                i++;
+            }
+            reverse(word.begin(),word.end());
+            if(word.length()>0){
+                ans += " "+word;
+            }
+        }
+        return ans.substr(1);//shuru ka space hatane ke liye
+    }
+};
 */
