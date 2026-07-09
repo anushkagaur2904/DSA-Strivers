@@ -1,34 +1,101 @@
-// 0/1 Knapsack Top Down DP
-//https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1
+//Coin Change II
+//https://leetcode.com/problems/coin-change-ii/description/
 
+//RECURSIVE
 /*
 class Solution {
 public:
-    int knapsack(int W, vector<int> &val, vector<int> &wt) {
+    int n;
+    int solve(int i,vector<int> &coins,int amount){
+        if(amount==0){
+            return 1;
+        }
+        if(i==n){
+            return 0;
+        }
+        if(coins[i]>amount){
+            return solve(i+1,coins,amount);
+        }
+        int take = solve(i,coins,amount-coins[i]);
+        int skip = solve(i+1,coins,amount);
 
-        int n = wt.size();
+        return take+skip;
+    }
+    int change(int amount, vector<int>& coins) {
+        n = coins.size();
+        return solve(0,coins,amount);
+    }
+};
+*/
 
-        vector<vector<int>> dp(n+1, vector<int>(W+1, 0));
+//MEMOIZATION
+/*
+class Solution {
+public:
+    int n;
+    int t[301][5001];
+    int solve(int i,vector<int> &coins,int amount){
+        if(amount==0){
+            return 1;
+        }
+        if(i==n){
+            return 0;
+        }
+        if(t[i][amount]!=-1){
+            return t[i][amount];
+        }
+        if(coins[i]>amount){
+            return t[i][amount]=solve(i+1,coins,amount);
+        }
+        int take = solve(i,coins,amount-coins[i]);
+        int skip = solve(i+1,coins,amount);
 
-        for(int i = 1; i <= n; i++) {
+        return t[i][amount]=take+skip;
+    }
+    int change(int amount, vector<int>& coins) {
+        n = coins.size();
+        memset(t,-1,sizeof(t));
+        return solve(0,coins,amount);
+    }
+};
+*/
 
-            for(int w = 1; w <= W; w++) {
+//BOTTOM UP
+/*
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
 
-                if(wt[i-1] <= w) {
+        int n = coins.size();
 
-                    dp[i][w] = max(
-                        val[i-1] + dp[i-1][w-wt[i-1]],
-                        dp[i-1][w]
-                    );
+        // dp[i][j] = Number of ways to make amount j
+        // using coins from index i to n-1
+        vector<vector<int>> dp(n + 1, vector<int>(amount + 1, 0));
+
+        // Base Case:
+        // Amount 0 can always be made by choosing no coins
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 1;
+        }
+
+        // Fill table from bottom to top
+        for (int i = n - 1; i >= 0; i--) {
+
+            for (int j = 1; j <= amount; j++) {
+
+                int skip = dp[i + 1][j];
+
+                int take = 0;
+
+                if (coins[i] <= j) {
+                    take = dp[i][j - coins[i]];
                 }
-                else {
 
-                    dp[i][w] = dp[i-1][w];
-                }
+                dp[i][j] = take + skip;
             }
         }
 
-        return dp[n][W];
+        return dp[0][amount];
     }
 };
 */
