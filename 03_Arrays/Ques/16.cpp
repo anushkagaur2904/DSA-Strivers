@@ -64,7 +64,7 @@ public:
         of squares (S2) of array elements*/
 
         /*
-                long long S = 0, S2 = 0;
+        long long S = 0, S2 = 0;
         for (int i = 0; i < n; i++) {
             S += nums[i];
             S2 += (long long)nums[i] * (long long)nums[i];
@@ -83,7 +83,7 @@ public:
          X = ((X + Y) + (X - Y)) / 2
          Y = X - (X - Y)*/
         /*
-                long long x = (val1 + val2) / 2;
+        long long x = (val1 + val2) / 2;
         long long y = x - val1;
 
         // Return the results as {repeating, missing}
