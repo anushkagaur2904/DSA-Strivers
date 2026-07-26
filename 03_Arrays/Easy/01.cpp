@@ -1,6 +1,16 @@
 //largest element in an array
 //https://www.geeksforgeeks.org/problems/largest-element-in-array4009/1
 
+//BRUTE
+/*
+Sort then print arr[n-1]
+TC => O(NlogN)
+SC => O(1)
+*/
+
+
+//OPTIMAL
+/*
 class Solution {
   public:
     int largest(vector<int> &arr) {
@@ -16,12 +26,6 @@ class Solution {
         
     }
 };
-//TC => O(N)
-
-/*
-BRUTE FORCE
-Sort then print arr[n-1]
-TC => O(NlogN)
-SC => O(1)
 */
+//TC => O(N)
 
