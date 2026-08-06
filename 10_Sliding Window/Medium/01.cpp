@@ -1,6 +1,31 @@
 //Longest Substring without Repeating Characters
 //https://leetcode.com/problems/longest-substring-without-repeating-characters/
 
+//BRUTE
+/*
+for(i=0;i<n;i++){
+    sub="";
+    for(j=i;j<n;j++){
+        sub=sub+s[j];
+    }
+}
+*/
+
+//BETTER
+/*
+int maxlen=0;
+for(i=0;i<n;i++){
+    hash[256]={0};
+    for(j=i;j<n;j++){
+        if(hash[s[j]==1]) break;
+        len=j-i+1;
+        maxlen = max(maxlen,len);
+        hash[s[j]]=1;
+    }
+}
+return maxlen;
+*/
+
 /*
 class Solution {
 public:
