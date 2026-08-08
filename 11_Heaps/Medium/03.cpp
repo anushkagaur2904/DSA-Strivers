@@ -16,7 +16,7 @@ class Solution {
 
             minh.push(arr[i]);
 
-            if(minh.size() > k + 1) {
+            if(minh.size() > k) {
 
                 ans.push_back(minh.top());
                 minh.pop();
