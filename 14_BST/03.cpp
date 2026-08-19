@@ -1,26 +1,20 @@
-//Floor in BST
-//https://www.geeksforgeeks.org/problems/closest-neighbor-in-bst/1
+//Insert a node in BST
+//https://leetcode.com/problems/insert-into-a-binary-search-tree/description/
 
 /*
 class Solution {
-  public:
-    int findMaxFork(Node* root, int k) {
-        // code here
-        int floor = -1;
-        while(root){
-            if(root->data==k){
-                floor=root->data;
-                return floor;
-            }
-            if(k>root->data){
-                floor = root->data;
-                root=root->right;
-            }
-            else{
-                root=root->left;
-            }
+public:
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if(root==NULL){
+            return new TreeNode(val);
         }
-        return floor;
+        if(val < root->val){
+            root->left = insertIntoBST(root->left,val);
+        }
+        else{
+            root->right = insertIntoBST(root->right,val);
+        }
+        return root;
     }
 };
 */
