@@ -5,14 +5,14 @@
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        ListNode* newHead = NULL;
+        ListNode* dummy = NULL;
         while(head!=NULL){
             ListNode *next = head->next;//next pointer
-            head->next = newHead;//head will point to dummy node now
-            newHead=head;//dummy will be head
+            head->next = dummy;//head will point to dummy node now
+            dummy=head;//dummy will be head
             head=next;//head will be next
         }
-        return newHead;
+        return dummy;
 
     }
 };

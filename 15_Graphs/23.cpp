@@ -1,27 +1,86 @@
-//Flood Fill Algorithm
-//https://leetcode.com/problems/flood-fill/description/
+//Alien Dictionary
+//https://www.geeksforgeeks.org/problems/alien-dictionary/1
 
 /*
 class Solution {
 public:
-    void dfs(int row,int col,vector<vector<int>> &ans,vector<vector<int>>& image,int newColor,int delRow[],int delCol[],int ini){
-        ans[row][col] = newColor;
-        int n = image.size();
-        int m = image[0].size();
-        for(int i=0;i<4;i++){
-            int nrow = row + delRow[i];
-            int ncol = col + delCol[i];
-            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && image[nrow][ncol]==ini && ans[nrow][ncol]!=newColor){
-                dfs(nrow,ncol,ans,image,newColor,delRow,delCol,ini);
+    string findOrder(vector<string> &words) {
+        int K = 26;
+        vector<vector<int>> adj(K);
+        vector<int> indegree(K, 0);
+        vector<bool> present(K, false);
+
+        // Mark characters that are actually present
+        for (auto &word : words) {
+            for (char ch : word) {
+                present[ch - 'a'] = true;
             }
         }
-    }
-    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        int ini = image[sr][sc];
-        vector<vector<int>> ans = image;//copy of matrix
-        int delRow[] = {-1,0,+1,0};
-        int delCol[] = {0,+1,0,-1};
-        dfs(sr,sc,ans,image,color,delRow,delCol,ini);
+
+        // Build graph
+        for (int i = 0; i < words.size() - 1; i++) {
+            string s1 = words[i];
+            string s2 = words[i + 1];
+
+            int len = min(s1.size(), s2.size());
+
+            bool found = false;
+
+            for (int ptr = 0; ptr < len; ptr++) {
+                if (s1[ptr] != s2[ptr]) {
+                    int u = s1[ptr] - 'a';
+                    int v = s2[ptr] - 'a';
+
+                    adj[u].push_back(v);
+                    indegree[v]++;
+
+                    found = true;
+                    break;
+                }
+            }
+
+            // Invalid case: longer word comes before its prefix
+            if (!found && s1.size() > s2.size()) {
+                return "";
+            }
+        }
+
+        // Topological sort
+        queue<int> q;
+
+        for (int i = 0; i < K; i++) {
+            if (present[i] && indegree[i] == 0) {
+                q.push(i);
+            }
+        }
+
+        string ans = "";
+
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+
+            ans += char(node + 'a');
+
+            for (int next : adj[node]) {
+                indegree[next]--;
+
+                if (indegree[next] == 0) {
+                    q.push(next);
+                }
+            }
+        }
+
+        // Cycle detected
+        int totalChars = 0;
+        for (int i = 0; i < K; i++) {
+            if (present[i])
+                totalChars++;
+        }
+
+        if (ans.size() != totalChars)
+            return "";
+
         return ans;
     }
 };

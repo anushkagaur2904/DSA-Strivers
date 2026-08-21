@@ -1,67 +1,62 @@
-//Disjoint Set
-//Union By Rank
+//DSU
+
+//FIND -> O(N)
+/* 
+int find(int i,vector<int> &parent){
+    if(i==parent[i]){
+        return i;
+    }
+    return find(parent[i],parent);
+}
+*/
+
+//UNION
+/*
+void union(int x,int y,vector<int> &parent){
+    int x_parent = find(x,parent);
+    int y_parent = find(y,parent);
+
+    if(x_parent!=y_parent){
+        parent[x_parent]=y_parent;
+    }
+}
+*/
+
+//PATH COMPRESSION
+/*
+int find(int i,vector<int> &parent){
+    if(i==parent[i]){
+        return i;
+    }
+    return parent[i]=find(parent[i],parent);
+}
+*/
+
+//UNION USING RANK
+/*
+void union(int x,int y,vector<int> &parent,vector<int> &rank){
+    int x_parent = find(x,parent);
+    int y_parent = find(y,parent);
+
+    if(x_parent == y_parent){
+        return;
+    }
+    if(rank[x_parent]>rank[y_parent]){
+        parent[y_parent]=x_parent;
+    }
+    else if(rank[x_parent]<rank[y_parent]){
+        parent[x_parent]=y_parent;
+    }
+    else{
+        parent[x_parent]=y_parent;
+        rank[y_parent]+=1;
+    }
+}
+*/
 
 /*
-class DisjointSet {
-    vector<int> rank, parent;
-
-public:
-    // Constructor
-    DisjointSet(int n) {
-
-        // Initially every node has rank 0
-        rank.resize(n + 1, 0);
-
-        // Parent array
-        parent.resize(n + 1);
-
-        // Every node is its own parent initially
-        for (int i = 0; i <= n; i++) {
-            parent[i] = i;
-        }
-    }
-
-    // Find Ultimate Parent with Path Compression
-    int findUPar(int node) {
-
-        // If node is its own parent, return it
-        if (node == parent[node])
-            return node;
-
-        // Path Compression
-        return parent[node] = findUPar(parent[node]);
-    }
-
-    // Union By Rank
-    void unionByRank(int u, int v) {
-
-        // Find ultimate parents
-        int ulp_u = findUPar(u);
-        int ulp_v = findUPar(v);
-
-        // Already in same component
-        if (ulp_u == ulp_v)
-            return;
-
-        // Attach smaller rank tree under larger rank tree
-        if (rank[ulp_u] < rank[ulp_v]) {
-
-            parent[ulp_u] = ulp_v;
-        }
-
-        else if (rank[ulp_v] < rank[ulp_u]) {
-
-            parent[ulp_v] = ulp_u;
-        }
-
-        // If both ranks are equal
-        else {
-
-            parent[ulp_v] = ulp_u;
-
-            // Increase rank since height increases
-            rank[ulp_u]++;
-        }
-    }
-};
+Key Details:
+Without Path Compression: Union by Rank alone provides $O(\log N)$ time complexity per operation.
+With Path Compression: Combining Path Compression with Union by Rank (or Union by Size) improves the worst-case amortized time complexity to $O(\alpha(N))$. 
+Inverse Ackermann Function: $\alpha(N)$ is the inverse of the Ackermann function, which is a very fast-growing function; thus, its inverse is nearly constant for any realistic input size.
 */

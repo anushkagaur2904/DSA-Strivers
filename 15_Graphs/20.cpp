@@ -1,129 +1,85 @@
-//Disjoint Set
-//Union By Size
+//Kruskal Algo
+//TC => O(E logE)
 
 /*
-#include <bits/stdc++.h>
-using namespace std;
-
-class DisjointSet {
-
-    vector<int> parent, rank, size;
-
+class Solution {
 public:
+    vector<int> parent;
+    vector<int> rank;
 
-    // Constructor
-    DisjointSet(int n) {
+    // Find function with path compression
+    int find(int i) {
+        if (parent[i] == i)
+            return i;
+        return parent[i] = find(parent[i]);
+    }
 
-        rank.resize(n + 1, 0);
+    // Union function by rank
+    void Union(int x, int y) {
+        int x_parent = find(x);
+        int y_parent = find(y);
 
-        // Initially every component has size = 1
-        size.resize(n + 1, 1);
+        if (x_parent == y_parent)
+            return;
 
-        parent.resize(n + 1);
+        if (rank[x_parent] < rank[y_parent]) {
+            parent[x_parent] = y_parent;
+        } else if (rank[x_parent] > rank[y_parent]) {
+            parent[y_parent] = x_parent;
+        } else {
+            parent[x_parent] = y_parent;
+            rank[y_parent]++;
+        }
+    }
 
-        // Every node is its own parent
-        for (int i = 0; i <= n; i++) {
+    // Kruskal's algorithm implementation
+    int Kruskal(vector<vector<int>> &vec) {
+        int sum = 0;
+        for (auto &temp : vec) {
+            int u = temp[0];
+            int v = temp[1];
+            int wt = temp[2];
+
+            int parent_u = find(u);
+            int parent_v = find(v);
+
+            if (parent_u != parent_v) {
+                Union(u, v);
+                sum += wt;
+            }
+        }
+        return sum;
+    }
+
+    // Function to find sum of weights of edges of the Minimum Spanning Tree
+    int spanningTree(int V, vector<vector<int>> adj[]) {
+        parent.resize(V);
+        rank.resize(V, 0);
+
+        for (int i = 0; i < V; i++) {
             parent[i] = i;
         }
-    }
 
-    // Find Ultimate Parent (Path Compression)
-    int findUPar(int node) {
+        // Convert adjacency list to edge list {u, v, wt}
+        vector<vector<int>> vec;
 
-        if (node == parent[node])
-            return node;
+        for (int u = 0; u < V; u++) {
+            for (auto &temp : adj[u]) {
+                int v = temp[0];
+                int wt = temp[1];
 
-        return parent[node] = findUPar(parent[node]);
-    }
-
-    // ---------------- UNION BY RANK ----------------
-    void unionByRank(int u, int v) {
-
-        int ulp_u = findUPar(u);
-        int ulp_v = findUPar(v);
-
-        // Already in same component
-        if (ulp_u == ulp_v)
-            return;
-
-        // Attach smaller rank tree below larger rank tree
-        if (rank[ulp_u] < rank[ulp_v]) {
-
-            parent[ulp_u] = ulp_v;
+                vec.push_back({u, v, wt});
+            }
         }
 
-        else if (rank[ulp_v] < rank[ulp_u]) {
+        // Custom comparator to sort edges by weight in ascending order
+        auto comparator = [](vector<int>& vec1, vector<int>& vec2) {
+            return vec1[2] < vec2[2];
+        };
 
-            parent[ulp_v] = ulp_u;
-        }
+        sort(vec.begin(), vec.end(), comparator);
 
-        else {
-
-            parent[ulp_v] = ulp_u;
-
-            // Increase rank
-            rank[ulp_u]++;
-        }
-    }
-
-    // ---------------- UNION BY SIZE ----------------
-    void unionBySize(int u, int v) {
-
-        int ulp_u = findUPar(u);
-        int ulp_v = findUPar(v);
-
-        // Already in same component
-        if (ulp_u == ulp_v)
-            return;
-
-        // Attach smaller component to larger component
-        if (size[ulp_u] < size[ulp_v]) {
-
-            parent[ulp_u] = ulp_v;
-
-            // Update size
-            size[ulp_v] += size[ulp_u];
-        }
-
-        else {
-
-            parent[ulp_v] = ulp_u;
-
-            // Update size
-            size[ulp_u] += size[ulp_v];
-        }
+        return Kruskal(vec);
     }
 };
-
-int main() {
-
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-#endif
-
-    DisjointSet ds(7);
-
-    ds.unionBySize(1, 2);
-    ds.unionBySize(2, 3);
-    ds.unionBySize(4, 5);
-    ds.unionBySize(6, 7);
-    ds.unionBySize(5, 6);
-
-    // Check if 3 and 7 belong to same component
-    if (ds.findUPar(3) == ds.findUPar(7))
-        cout << "Same Component\n";
-    else
-        cout << "Different Component\n";
-
-    // Connect the two components
-    ds.unionBySize(3, 7);
-
-    if (ds.findUPar(3) == ds.findUPar(7))
-        cout << "Same Component\n";
-    else
-        cout << "Different Component\n";
-
-    return 0;
-}
 */
