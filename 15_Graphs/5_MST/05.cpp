@@ -34,28 +34,25 @@ public:
 
     int makeConnected(int n, vector<vector<int>>& connections) {
 
-        if(connections.size() < n - 1)
+        if(connections.size()<n-1){
             return -1;
-
+        }
         parent.resize(n);
-        rank.resize(n, 0);
+        rank.resize(n,0);
 
-        for(int i = 0; i < n; i++)
-            parent[i] = i;
+        for(int i=0;i<n;i++){
+            parent[i]=i;
+        }
 
-        int components = n; //ilaka
+        int components = n;
 
-        for(auto &vec : connections) {
-
-            if(find(vec[0]) != find(vec[1])) {
-
-                Union(vec[0], vec[1]);
-
+        for(auto &vec : connections){
+            if(find(vec[0])!=find(vec[1])){
+                Union(vec[0],vec[1]);
                 components--;
             }
         }
-
-        return components - 1;
+        return components-1;
     }
 };
 */

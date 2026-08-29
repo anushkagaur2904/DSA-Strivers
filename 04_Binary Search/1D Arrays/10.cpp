@@ -7,19 +7,23 @@ find minimum in array
 */
 
 /*
-SORTED HAI TOH BINARY SEARCH
-identify the sorted half
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n = nums.size();
+        int l=0;
+        int r = n-1;
 
-arr[] = [4,5,6,7,0,1,2]
-left half is sorted
-mtlb min part toh right part mein ho skta hai cuz vo rotating part hai
-
-arr[] = [7,8,1,2,3,4,5,6]
-right half sorted hai
-mtlb left half mein
-
-arr[] = [4,5,1,2,3]
-pr idhr right half sorted hai aur min bhi hai
-
-
+        while(l<r){
+            int mid = l + (r-l)/2;
+            if(nums[mid]>nums[r]){
+                l=mid+1;
+            }
+            else{
+                r=mid;
+            }
+        }
+        return nums[r];
+    }
+};
 */

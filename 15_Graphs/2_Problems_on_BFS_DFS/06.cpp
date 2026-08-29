@@ -1,61 +1,43 @@
-//Detect a Cycle in an Undirected Graph using DFS 
-//https://www.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1
+//Distance of nearest cell having one or 01 Matrix
+//https://leetcode.com/problems/01-matrix/description/
 
 /*
 class Solution {
-  public:
-    
-    bool isCycleDFS(vector<vector<int>>& adj,int u,vector<bool> &visited,int parent){
-        visited[u]=true;
-        
-        for(int &v: adj[u]){
-            if(v==parent) continue;
-            
-            if(visited[v]){
-                return true;
-            }
-            
-            if(isCycleDFS(adj,v,visited,u)){
-                return true;
-            }
-        }
-        return false;
-    }
-    bool isCycle(int V, vector<vector<int>>& edges) {
-        // Code here
-        vector<bool> visited(V,false);
-        
-        vector<vector<int>> adj(V);
+public:
+    vector<vector<int>> directions {{-1,0},{0,1},{1,0},{0,-1}};
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int m = mat.size();
+        int n = mat[0].size();
 
-        // Build adjacency list
-        for(auto &edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
+        queue<pair<int,int>> que;
 
-            adj[u].push_back(v);
-            adj[v].push_back(u);
-        }
-        
-        for(int i=0;i<V;i++){
-            if(!visited[i] && isCycleDFS(adj,i,visited,-1)){
-                //visited nhi hai pr cycle mil gya
-                return true;
+        vector<vector<int>> result(m,vector<int>(n,-1));
+
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(mat[i][j]==0){
+                    result[i][j]=0;
+                    que.push({i,j});
+                }
             }
         }
-        return false;
+        while(!que.empty()){
+            pair<int,int> p = que.front();
+            que.pop();
+            int row = p.first;
+            int col = p.second;
+
+            for(auto& dir:directions){
+                int nrow = row + dir[0];
+                int ncol = col + dir[1];
+
+                if(nrow>=0 && nrow<m && ncol>=0 && ncol<n && result[nrow][ncol]==-1){
+                    result[nrow][ncol]= result[row][col]+1;
+                    que.push({nrow,ncol});
+                }
+            }
+        }
+        return result;
     }
 };
-*/
-
-/*
-Complexity
-
-If the graph has V vertices and E edges:
-
-Time: O(V + E)
-Space: O(V) for visited + recursion stack
-
-If you include the adjacency list itself:
-
-Total auxiliary + graph storage: O(V + E)
 */

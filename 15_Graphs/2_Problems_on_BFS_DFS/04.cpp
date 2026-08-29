@@ -1,22 +1,31 @@
-//Detect a Cycle in an Undirected Graph using DFS 
+//Detect a Cycle in an Undirected Graph using BFS 
 //https://www.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1
+
 
 /*
 class Solution {
   public:
     
-    bool isCycleDFS(vector<vector<int>>& adj,int u,vector<bool> &visited,int parent){
+    bool isCycleBFS(vector<vector<int>>& adj,int u,vector<bool> &visited){
+        queue<pair<int,int>> que;
+        que.push({u,-1});
         visited[u]=true;
         
-        for(int &v: adj[u]){
-            if(v==parent) continue;
+        while(!que.empty()){
+            pair<int,int> P = que.front();
+            que.pop();
             
-            if(visited[v]){
-                return true;
-            }
+            int source = P.first;
+            int parent = P.second;
             
-            if(isCycleDFS(adj,v,visited,u)){
-                return true;
+            for(int &v: adj[source]){
+                if(visited[v]==false){
+                    visited[v]=true;
+                    que.push({v,source});
+                }
+                else if(v!=parent){
+                    return true;
+                }
             }
         }
         return false;
@@ -37,7 +46,7 @@ class Solution {
         }
         
         for(int i=0;i<V;i++){
-            if(!visited[i] && isCycleDFS(adj,i,visited,-1)){
+            if(!visited[i] && isCycleBFS(adj,i,visited)){
                 //visited nhi hai pr cycle mil gya
                 return true;
             }
@@ -45,17 +54,4 @@ class Solution {
         return false;
     }
 };
-*/
-
-/*
-Complexity
-
-If the graph has V vertices and E edges:
-
-Time: O(V + E)
-Space: O(V) for visited + recursion stack
-
-If you include the adjacency list itself:
-
-Total auxiliary + graph storage: O(V + E)
 */

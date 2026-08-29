@@ -1,49 +1,47 @@
-//Bipartite Graph (DFS)
-//https://leetcode.com/problems/is-graph-bipartite/description/
+//Detect cycle in a directed graph using DFS
+//https://www.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1
 
 /*
 class Solution {
-public:
-
-    bool dfs(int node,
-             int col,
-             vector<int>& color,
-             vector<vector<int>>& graph) {
-
-        color[node] = col;
-
-        for(auto it : graph[node]) {
-
-            if(color[it] == -1) {
-
-                if(!dfs(it, !col, color, graph))
-                    return false;
+  public:
+  
+    bool isCycleDFS(vector<vector<int>> &adj,int u,vector<bool> &visited, vector<bool> &inRecursion){
+        visited[u]=true;
+        inRecursion[u]=true;
+        
+        for(int &v : adj[u]){
+            //if not visited then we check for cycle in DFS
+            if(visited[v]==false && isCycleDFS(adj,v,visited,inRecursion)){
+                return true;
             }
-            else if(color[it] == col) {
-
-                return false;
+            else if(inRecursion[v]==true){
+                return true;
             }
         }
-
-        return true;
+        inRecursion[u]=false;
+        return false;
     }
+    bool isCyclic(int V, vector<vector<int>> &edges) {
+        // code here
+        vector<bool> visited(V,false);
+        vector<bool> inRecursion(V,false);
+        
+        vector<vector<int>> adj(V);
 
-    bool isBipartite(vector<vector<int>>& graph) {
+        // Build adjacency list
+        for(auto &edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
 
-        int V = graph.size();
-
-        vector<int> color(V, -1);
-
-        for(int start = 0; start < V; start++) {
-
-            if(color[start] == -1) {
-
-                if(!dfs(start, 0, color, graph))
-                    return false;
+            adj[u].push_back(v);
+        }
+        
+        for(int i=0;i<V;i++){
+            if(!visited[i] && isCycleDFS(adj,i,visited,inRecursion)){
+                return true;
             }
         }
-
-        return true;
+        return false;
     }
 };
 */
