@@ -1,60 +1,107 @@
 //SEARCH IN ROTATED SORTED ARRAY - II (WITH DUPLICATES)
-//https://leetcode.com/problems/search-in-rotated-sorted-array-ii/submissions/1939061931/
-/*
-arr[] = [7 8 1 2 3 3 3 4 5 6] target =3
-tell whether exists or not
-
-if u have to tell the index then binary search wont work, do linear search
-
-arr[] = [3,1,2,3,3,3,3]
-arr[mid] =3 (first and last element same as mid)
-ab sorted half kaise pta chlega?????
-toh strategy fail
-
-SO trim down this condition
-if arr[mid]==target and arr[low]=arr[mid]=arr[high]
-low++,high--
-i.e shrink search space
-*/
+//https://leetcode.com/problems/search-in-rotated-sorted-array-ii/description/
 
 /*
 class Solution {
 public:
-    int search(vector<int>& nums, int target) {
-        int low=0;
-        int high = nums.size() -1;
-        while(low<=high){
-            int mid = (low+high)/2;
-            //the left side is sorted
-            if(nums[mid]==target) return true;
-            if(nums[mid]==nums[low] && nums[mid]==nums[high]){
-                    low++,high--;
-                    continue;
-                }//shrink down the search space
-            if(nums[low]<=nums[mid]){
-                //figure out if element lies on left half or not
-                if(target>=nums[low] && target<=nums[mid]){
-                    high=mid-1;
-                }
-                else{
-                    low=mid+1;
-                }
+
+    int findPivot(vector<int>& nums,int n){
+        int l=0,r=n-1;
+
+        while(l<r){
+            //skip duplicates from left and right
+            while(l<r && nums[l] == nums[l+1]){
+                l++;
+            }
+            while(l<r && nums[r] == nums[r-1]){
+                r--;
+            }
+            int mid = l + (r-l)/2;
+
+            if(nums[mid]>nums[r]){
+                l=mid+1;
             }
             else{
-                if(target>=nums[mid] && target<=nums[high]){
-                    low=mid+1;
-                }
-                else{
-                    high=mid-1;
-                }
+                r=mid;
+            }
+        }
+        return r;
+    }
+
+    bool binarySearch(int l,int r,vector<int>& nums, int target){
+        int idx=-1;
+
+        while(l<=r){
+            int mid = l + (r-l)/2;
+
+            if(nums[mid]==target){
+                return true;
+            }
+            else if(nums[mid]<target){
+                l=mid+1;
+            }
+            else{
+                r=mid-1;
             }
         }
         return false;
     }
+    bool search(vector<int>& nums, int target) {
+        int n = nums.size();
+        int pivot = findPivot(nums,n);
+        if(binarySearch(0,pivot-1,nums,target)){
+            return true;//left side of pivot
+        }
+        return binarySearch(pivot,n-1,nums,target);//right side of pivot
+    }
 };
 */
 
+//OR
 /*
-TC => O(log n base 2) avg case
-    worst case if max are duplicates => O(N/2) when u shrink almost high
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int l = 0;
+        int r = nums.size() - 1;
+
+        while(l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if(nums[mid] == target) {
+                return true;
+            }
+
+            // Cannot determine sorted side because of duplicates
+            if(nums[l] == nums[mid] && nums[mid] == nums[r]) {
+                l++;
+                r--;
+            }
+
+            // Left half is sorted
+            else if(nums[l] <= nums[mid]) {
+
+                if(nums[l] <= target && target < nums[mid]) {
+                    r = mid - 1;
+                }
+                else {
+                    l = mid + 1;
+                }
+            }
+
+            // Right half is sorted
+            else {
+
+                if(nums[mid] < target && target <= nums[r]) {
+                    l = mid + 1;
+                }
+                else {
+                    r = mid - 1;
+                }
+            }
+        }
+
+        return false;
+    }
+};
 */
