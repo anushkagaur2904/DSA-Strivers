@@ -1,68 +1,67 @@
-//Number of Enclaves
-//https://leetcode.com/problems/number-of-enclaves/description/
+//Surrounded Regions
+//https://leetcode.com/problems/surrounded-regions/
 
 /*
 class Solution {
 public:
-    int m, n;
+    int delrow[4] = {-1,0,+1,0};
+    int delcol[4] = {0,1,0,-1};
+    int n,m;
 
-    void dfs(vector<vector<int>>& grid, int i, int j) {
+    void dfs(int row,int col,vector<vector<int>>& visited,vector<vector<char>>& board){
+        visited[row][col]=1;
 
-        if(i < 0 || i >= m || j < 0 || j >= n ||
-           grid[i][j] == 0) {
-            return;
+        //check for all directions
+        for(int i=0;i<4;i++){
+            int nrow = row + delrow[i];
+            int ncol = col + delcol[i];
+
+            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && !visited[nrow][ncol] && board[nrow][ncol]=='O'){
+                dfs(nrow,ncol,visited,board);
+            }
         }
-
-        // Mark boundary-connected land as visited
-        grid[i][j] = 0;
-
-        dfs(grid, i, j + 1);
-        dfs(grid, i, j - 1);
-        dfs(grid, i + 1, j);
-        dfs(grid, i - 1,j);
     }
+    void solve(vector<vector<char>>& board) {
+        n = board.size();
+        m = board[0].size();
 
-    int numEnclaves(vector<vector<int>>& grid) {
+        vector<vector<int>> visited(n,vector<int>(m,0));
 
-        m = grid.size();
-        n = grid[0].size();
+        //traverse first row and last row
+        for(int j=0;j<m;j++){
 
-        // First and last columns
-        for(int row = 0; row < m; row++) {
-
-            if(grid[row][0] == 1) {
-                dfs(grid, row, 0);
+            //first row
+            if(!visited[0][j] && board[0][j]=='O'){
+                dfs(0,j,visited,board);
             }
-
-            if(grid[row][n - 1] == 1) {
-                dfs(grid, row, n - 1);
-            }
-        }
-
-        // First and last rows
-        for(int col = 0; col < n; col++) {
-
-            if(grid[0][col] == 1) {
-                dfs(grid, 0, col);
-            }
-
-            if(grid[m - 1][col] == 1) {
-                dfs(grid, m - 1, col);
+            
+            //last row
+            if(!visited[n-1][j] && board[n-1][j]=='O'){
+                dfs(n-1,j,visited,board);
             }
         }
 
-        // Count remaining land
-        int count = 0;
+        //traverse first and last col
+        for(int i=0;i<n;i++){
 
-        for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                if(grid[i][j] == 1) {
-                    count++;
+            //first col
+            if(!visited[i][0] && board[i][0]=='O'){
+                dfs(i,0,visited,board);
+            }
+
+            //last col
+            if(!visited[i][m-1] && board[i][m-1]=='O'){
+                dfs(i,m-1,visited,board);
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(!visited[i][j] && board[i][j]=='O'){
+                    board[i][j]='X';
                 }
             }
         }
-
-        return count;
     }
 };
 */
